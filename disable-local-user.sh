@@ -1,4 +1,3 @@
-#!/bin/bas
 #!/bin/bash
 
 # Echo usage if something isn't right.
