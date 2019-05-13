@@ -1,0 +1,69 @@
+#!/bin/bash
+clear
+#Make sure the script is being executed with superuser privileges
+	if ! [ $(id -u) = 0 ];
+	then
+		echo "Please run with sudo or as root."
+	exit 1
+	fi
+# Echo usage if something isn't right.
+usage() {
+    echo "Usage: $0 [-dra] USER [USERN]"
+    echo "Disable a local linux account."
+    echo "  -d  Deletes accounts instead of disabling them."
+    echo "  -r  Removes the home directory associated with the account(s)."
+    echo "-a Creates an archive of the home directory associated with the accounts(s)." 1>&2; exit 1;
+}
+
+while getopts ":d:r:a" o; do
+    case "${o}" in
+        d)
+            #PORT=${OPTARG}
+            d=${OPTARG}
+            uid=$(id -u $d)
+	    if [ $d -le 1000 ]; then
+		echo "Processing user: $d"
+		echo "Refusing to remove the mail account with UID $uid."
+	    else
+		if userdel -r $d; then
+			echo "User $d deleted!"
+			echo "Succed!"
+		else
+			echo "Something wrong"
+			echo "User logged in?"
+		fi
+	    fi
+	    #[[ $d => "0" || $d =< "1000" ]] && usage
+            ;;
+        r)
+            HOST=${OPTARG}
+            h=${OPTARG}
+            ;;
+        a)
+            FORCE=1
+            ;;
+        :)
+            echo "ERROR: Option -$OPTARG requires an argument"
+            #usage
+            ;;
+        \?)
+            echo "$0: illegal option -- $OPTARG"
+            #usage
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+# Check required switches exist
+if [ -z "${p}" ] || [ -z "${h}" ]; then
+ #   usage
+ echo "Please give p and h values"
+fi
+
+ 
+echo "p = ${p}"
+echo "h = ${h}"
+echo "PORT = ${PORT}"
+echo "HOST = ${HOST}"
+echo "FORCE = ${FORCE}"
+echo ${f}
