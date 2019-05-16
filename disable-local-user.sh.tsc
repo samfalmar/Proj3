@@ -35,10 +35,16 @@ while getopts ":d:r:a" o; do
 	    fi
 	    #[[ $d => "0" || $d =< "1000" ]] && usage
             ;;
-        r)
-            HOST=${OPTARG}
-            h=${OPTARG}
-            ;;
+          r)
+            r=${OPTARG}
+            if [ -d /home/$r ]; then
+                rm -r /home/$r > /dev/null 2>&1
+                echo "Home folder $r deleted!"
+            else
+                echo "Something wrong"
+            fi
+        ;;
+
         a)
             FORCE=1
             ;;
